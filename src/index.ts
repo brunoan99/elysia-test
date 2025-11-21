@@ -1,7 +1,32 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
+import { fromTypes, openapi } from "@elysiajs/openapi";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const app = new Elysia()
+    .use(
+        openapi({
+            references: fromTypes(),
+        }),
+    )
+    .get("/", () => "Plain route")
+    .get("/routeparam/:param", ({ params: { param } }) => param, {
+        params: t.Object({
+            param: t.Number(),
+        }),
+    })
+    .get(
+        "/query/:routeparam",
+        ({ params: { routeparam }, query: { name } }) =>
+            `Query Param Name: ${name}, Route Param Value: ${routeparam}`,
+        {
+            params: t.Object({
+                routeparam: t.Number(),
+            }),
+            query: t.Object({
+                name: t.String(),
+            }),
+        },
+    )
+    .listen(3000);
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+const message = `Elysia is running at ${app.server?.hostname}:${app.server?.port}`;
+console.log(message);
