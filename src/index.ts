@@ -28,5 +28,4 @@ const app = new Elysia()
     )
     .listen(3000);
 
-const message = `Elysia is running at ${app.server?.hostname}:${app.server?.port}`;
-console.log(message);
+export type App = typeof app;
