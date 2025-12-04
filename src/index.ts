@@ -1,15 +1,27 @@
 import { Elysia, file, form, t } from "elysia";
 import { fromTypes, openapi } from "@elysiajs/openapi";
 
-const app = new Elysia()
+const app = new Elysia().use(
+  // This was available at getting started - at glance
+  // But for not getting same prefix as others routes of the module
+  // moved for here
+  openapi({
+    documentation: {
+      tags: [
+        { name: "Getting Started - At Glance", description: "Module content available at: https://elysiajs.com/at-glance" },
+        { name: "Essential - Route", description: "Module content available at: https://elysiajs.com/essential/route.html" },
+        { name: "Essential - Handler", description: "Module content available at: https://elysiajs.com/essential/handler.html" },
+      ]
+    },
+    references: fromTypes(
+      process.env.NODE_ENV === 'production'
+        ? 'dist/index.d.ts'
+        : 'src/index.ts'),
+  }),
+)
 
 // GETTING STARTED - AT GLANCE
-const getting_started_at_glance = new Elysia()
-  .use(
-    openapi({
-      references: fromTypes(),
-    }),
-  )
+const getting_started_at_glance = new Elysia({ prefix: "getting_started_at_glance", tags: ["Getting Started - At Glance"] })
   .get("/", () => "Plain route")
   // Route with type type schema to define Params
   .get("/routeparam/:param", ({ params: { param } }) => param, {
@@ -34,7 +46,7 @@ const getting_started_at_glance = new Elysia()
   )
 
 // ESSENTIAL - Route
-const essential_route = new Elysia()
+const essential_route = new Elysia({ prefix: "essential_route", tags: ["Essential - Route"] })
   // Static Path
   .get('/id/1', 'static path')
   // Dynamic path with Route Param
@@ -75,9 +87,11 @@ const user2 = new Elysia({ prefix: "user2 " })
   .post('/sign-up', 'Sign up')
   .post('/profile', 'Profile')
 
+essential_route.use(user2)
+
 
 // ESSENTIAL - HANDLER
-const essential_handler = new Elysia()
+const essential_handler = new Elysia({ prefix: "essential_handler", tags: ["Essential - Handler"] })
   // can be alse writen as () => 'Hello Elysia'
   // A handler can be a literal
   .get("/handler", "Hello Elysia")
@@ -127,7 +141,6 @@ app
   .use(getting_started_at_glance)
   .use(essential_route)
   .use(essential_handler)
-  .use(user2)
   .listen(3000)
 
 export type App = typeof app;
