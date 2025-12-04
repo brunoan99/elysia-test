@@ -135,7 +135,12 @@ const essential_handler = new Elysia({ prefix: "essential_handler", tags: ["Esse
   .get('/user-agent', ({ request }) => {
     return request.headers.get('user-agent')
   })
-
+  .get('/port', ({ server }) => {
+    return server?.port
+  })
+  .get('/ip', ({ server, request }) => {
+    return server?.requestIP(request)
+  })
 // END
 app
   .use(getting_started_at_glance)
