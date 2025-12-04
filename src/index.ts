@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { fromTypes, openapi } from "@elysiajs/openapi";
 
+// GETTING STARTED - AT GLANCE
 const app = new Elysia()
   .use(
     openapi({
@@ -29,6 +30,9 @@ const app = new Elysia()
       }),
     },
   )
+
+// ESSENTIAL - Route
+const essential_route = new Elysia()
   // Static Path
   .get('/id/1', 'static path')
   // Dynamic path with Route Param
@@ -69,7 +73,11 @@ const user2 = new Elysia({ prefix: "user2 " })
   .post('/sign-up', 'Sign up')
   .post('/profile', 'Profile')
 
-app.use(user2)
+
+// ESSENTIAL - HANDLER
+
+// END
+app.use(essential_route).use(user2)
   .listen(3000)
 
 export type App = typeof app;
