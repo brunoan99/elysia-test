@@ -4,6 +4,7 @@ import { getting_started_at_glance } from "./getting-started/at-glance";
 import { essential_route } from "./essential/route";
 import { essential_handler } from "./essential/handler";
 import { essential_validation } from "./essential/validation";
+import { essential_lifecycle } from "./essential/lifecycle";
 
 const app = new Elysia().use(
   // This was available at getting started - at glance
@@ -16,6 +17,7 @@ const app = new Elysia().use(
         { name: "Essential - Route", description: "Module content available at: https://elysiajs.com/essential/route.html" },
         { name: "Essential - Handler", description: "Module content available at: https://elysiajs.com/essential/handler.html" },
         { name: "Essential - Validation", description: "Module content available at: https://elysiajs.com/essential/validation.html" },
+        { name: "Essential - Lifecycle", description: "Module content available at: https://elysiajs.com/essential/life-cycle.html" },
       ]
     },
     references: fromTypes(
@@ -30,6 +32,7 @@ app
   .use(essential_route)
   .use(essential_handler)
   .use(essential_validation)
+  .use(essential_lifecycle)
   .listen(3000)
 
 export type App = typeof app;

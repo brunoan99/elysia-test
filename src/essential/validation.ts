@@ -184,6 +184,7 @@ const essential_validation_4 = new Elysia()
     response: SignDTO,
   })
   // something that can alse be done is to register a model
+  // models are also shown on openapi tab
   .model({
     sigin: t.Object({
       username: t.String(),
